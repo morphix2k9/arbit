@@ -1,9 +1,9 @@
-name: Auto-Deployed to Vercel
+name: Auto-Deploy to Vercel
 
 on:
   push:
     branches:
-      - main  # Runs on every push to the main branch
+      - main
 
 jobs:
   deploy:
@@ -17,11 +17,11 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Install Vercel CLI (Fix for Exit Code 127)
-        run: npm install -g vercel && export PATH="$HOME/.npm-global/bin:$PATH"
+      - name: Install Vercel CLI
+        run: npm install -g vercel@latest && export PATH="$HOME/.npm-global/bin:$PATH"
 
       - name: Pull Vercel Project Settings
-        run: vercel pull --yes --environment=production --token ${{ secrets.VERCEL_TOKEN }}
+        run: npx vercel pull --yes --environment=production --token ${{ secrets.VERCEL_TOKEN }}
 
       - name: Deploy to Vercel
-        run: vercel deploy --prod --token ${{ secrets.VERCEL_TOKEN }}
+        run: npx vercel deploy --prod --token ${{ secrets.VERCEL_TOKEN }}
