@@ -1,4 +1,4 @@
-name: Auto-Deploy to Vercel
+name: Auto-Sync Repository
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  deploy:
+  sync:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -24,16 +24,5 @@ jobs:
           echo "$HOME/.npm-global/bin" >> $GITHUB_PATH
           npx vercel --version
 
-      - name: Debug Vercel CLI Path
-        run: |
-          which vercel || echo "❌ Vercel not found"
-          echo "🔍 Available npm global packages:"
-          npm list -g --depth=0
-          echo "🔍 Checking Vercel CLI version..."
-          npx vercel --version
-
-      - name: Deploy to Vercel Using Installed Version
-        run: |
-          VERCEL_VERSION=$(npx vercel --version)
-          echo "🔍 Deploying with Vercel CLI version $VERCEL_VERSION..."
-          npx vercel deploy --prod --token ${{ secrets.VERCEL_TOKEN }}
+      - name: Deploy to Vercel
+        run: npx vercel deploy --prod --token ${{ secrets.VERCEL_TOKEN }}
