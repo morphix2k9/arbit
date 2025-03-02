@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Arbitrage Bot</title>
+</head>
+<body>
+    <h1>Chat with AI</h1>
+    <input type="text" id="message" placeholder="Type your question">
+    <button onclick="sendMessage()">Send</button>
+    <p id="response"></p>
+
+    <script>
+        async function sendMessage() {
+            let message = document.getElementById("message").value;
+            let response = await fetch('/api/chatbot', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message })
+            });
+            let result = await response.json();
+            document.getElementById("response").innerText = result.response;
+        }
+    </script>
+</body>
+</html>
