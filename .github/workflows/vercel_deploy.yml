@@ -17,15 +17,20 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Install Vercel CLI
+      - name: Find and Use the Installed Vercel Version
         run: |
+          npm list -g --depth=0 | grep vercel || echo "⚠️ Vercel CLI not found, installing..."
           npm install -g vercel@latest
+          VERCEL_VERSION=$(npx vercel --version)
+          echo "✅ Vercel CLI Version Found: $VERCEL_VERSION"
           export PATH="$HOME/.npm-global/bin:$PATH"
           echo "$HOME/.npm-global/bin" >> $GITHUB_PATH
-          npx vercel --version  # Verify installation
 
       - name: Pull Vercel Project Settings
         run: npx vercel pull --yes --environment=production --token ${{ secrets.VERCEL_TOKEN }}
 
-      - name: Deploy to Vercel
-        run: npx vercel deploy --prod --token ${{ secrets.VERCEL_TOKEN }}
+      - name: Deploy to Vercel using Found Version
+        run: |
+          VERCEL_VERSION=$(npx vercel --version)
+          echo "🔍 Deploying with Vercel CLI version $VERCEL_VERSION..."
+          npx vercel deploy --prod --token ${{ secrets.VERCEL_TOKEN }}
