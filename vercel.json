@@ -1,9 +1,18 @@
 {
-  "version": 2,
-  "builds": [
-    { "src": "api/chatbot.py", "use": "@vercel/python" }
-  ],
+  "functions": {
+    "api/index.js": {
+      "runtime": "nodejs18.x"
+    }
+  },
   "routes": [
-    { "src": "/api/chatbot", "dest": "/api/chatbot.py" }
-  ]
+    {
+      "src": "/(.*)",
+      "dest": "/api/index.js"
+    }
+  ],
+  "build": {
+    "env": {
+      "NODE_ENV": "production"
+    }
+  }
 }
