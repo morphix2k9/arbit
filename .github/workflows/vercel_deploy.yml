@@ -17,15 +17,15 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Install Vercel CLI (Version 41.3.0)
+      - name: Install Vercel CLI
         run: |
-          npm install -g vercel@41.3.0
-          echo "$HOME/.npm-global/bin" >> $GITHUB_PATH
+          npm install -g vercel@latest
           export PATH="$HOME/.npm-global/bin:$PATH"
-          vercel --version  # Verify installation
+          echo "$HOME/.npm-global/bin" >> $GITHUB_PATH
+          npx vercel --version  # Verify installation
 
       - name: Pull Vercel Project Settings
-        run: npx vercel@41.3.0 pull --yes --environment=production --token ${{ secrets.VERCEL_TOKEN }}
+        run: npx vercel pull --yes --environment=production --token ${{ secrets.VERCEL_TOKEN }}
 
       - name: Deploy to Vercel
-        run: npx vercel@41.3.0 deploy --prod --token ${{ secrets.VERCEL_TOKEN }}
+        run: npx vercel deploy --prod --token ${{ secrets.VERCEL_TOKEN }}
