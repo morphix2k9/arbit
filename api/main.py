@@ -1,11 +1,14 @@
 from fastapi import FastAPI
-from api.chatbot import chatbot_response  # Import chatbot logic
+from pydantic import BaseModel
 
 app = FastAPI()
 
-@app.get("/chat")
-async def chat():
-    return chatbot_response()
+class ChatRequest(BaseModel):
+    user_message: str
+
+@app.post("/chat")  # ✅ Ensure this matches your Postman request method
+async def chat(request: ChatRequest):
+    return {"response": f"Chatbot received: {request.user_message}"}
 
 if __name__ == "__main__":
     import uvicorn
